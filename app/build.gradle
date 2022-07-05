@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+
+configurations {
+    checkstyleClasspath
+}
+
+android {
+    compileSdkVersion 29
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "io.mavsdk.androidclient"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+task checkstyle(type: Checkstyle) {
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = project.files()
+    checkstyleClasspath = project.configurations.checkstyleClasspath
+
+    maxWarnings 0
+
+    reports {
+        xml.enabled true
+        xml.destination new File("$project.buildDir/reports/checkstyle/checkstyle_report.xml")
+
+        html.enabled true
+        html.destination new File("$project.buildDir/reports/checkstyle/checkstyle_report.html")
+    }
+}
+
+build.dependsOn 'checkstyle'
+
+dependencies {
+    checkstyleClasspath 'com.puppycrawl.tools:checkstyle:8.17'
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.5.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    implementation 'com.github.tony19:logback-android:2.0.0'
+    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v9:0.9.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.2.0'
+    implementation 'io.mavsdk:mavsdk:0.7.0'
+    implementation 'io.mavsdk:mavsdk-server:0.7.0'
+    implementation 'org.slf4j:slf4j-api:1.7.28'
+
+    implementation 'com.google.guava:guava:27.0.1-android'
+
+    testImplementation 'junit:junit:4.13'
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+}
