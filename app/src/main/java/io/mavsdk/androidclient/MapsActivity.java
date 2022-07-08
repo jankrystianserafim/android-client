@@ -100,9 +100,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     drone = mDroneRepository.getmDrone();
 
     disposables.add(drone.getTelemetry().getFlightMode().distinctUntilChanged()
-        .subscribe(flightMode -> logger.debug("flight mode: " + flightMode)));
+            .subscribe(flightMode -> logger.debug("flight mode: " + flightMode)));
     disposables.add(drone.getTelemetry().getArmed().distinctUntilChanged()
-        .subscribe(armed -> logger.debug("armed: " + armed)));
+            .subscribe(armed -> logger.debug("armed: " + armed)));
     disposables.add(drone.getTelemetry().getPosition().subscribe(position -> {
       LatLng latLng = new LatLng(position.getLatitudeDeg(), position.getLongitudeDeg());
       viewModel.currentPositionLiveData.postValue(latLng);
@@ -218,12 +218,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     for (LatLng latLng : latLngs) {
       CircleOptions circleOptions = new CircleOptions()
-          .withLatLng(latLng)
-          .withCircleColor(ColorUtils.colorToRgbaString(Color.BLUE))
-          .withCircleStrokeColor(ColorUtils.colorToRgbaString(Color.BLACK))
-          .withCircleStrokeWidth(1.0f)
-          .withCircleRadius(12f)
-          .withDraggable(false);
+              .withLatLng(latLng)
+              .withCircleColor(ColorUtils.colorToRgbaString(Color.BLUE))
+              .withCircleStrokeColor(ColorUtils.colorToRgbaString(Color.BLACK))
+              .withCircleStrokeWidth(1.0f)
+              .withCircleRadius(12f)
+              .withDraggable(false);
 
       circleManager.create(circleOptions);
     }
@@ -246,8 +246,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mapboxMap.setStyle(Style.LIGHT, style -> {
       // Add the marker image to map
       style.addImage("marker-icon-id",
-          BitmapFactory.decodeResource(
-              MapsActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+              BitmapFactory.decodeResource(
+                      MapsActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
       symbolManager = new SymbolManager(this.mapView, this.map, style);
       symbolManager.setIconAllowOverlap(true);
